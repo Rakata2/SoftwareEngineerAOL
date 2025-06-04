@@ -19,7 +19,7 @@ public class DialogueScript : MonoBehaviour
     public string[] SoupLines1 = { "Do you have any soup left?" };
     public string[] SoupLines2 = { "I could eat something hot right now..." };
     public string[] SoupLines3 = { "May I have some soup?" };
-    public string[] SoupLines4 = { "I have been feeling a bit sick these past few days, do you have that can help with that?" };
+    public string[] SoupLines4 = { "Any comfort food? kinda feeling under the weather." };
     public string[] SoupLines5 = { "I'll take the soup if you have any left." };
 
     public string[] PorridgeLines1 = { "Is there any porridge left?" };

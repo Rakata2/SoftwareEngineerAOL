@@ -24,7 +24,8 @@ public class NPCMovement : MonoBehaviour
         if(!TriggerDialogue && Vector3.Distance(transform.position, targetPosition) < 0.1f)
         {
             TriggerDialogue = true;
-            int choice = Random.Range(0, 20);
+           // int choice = Random.Range(0, 20);
+           int choice = 8;
             if(choice == 0)
             {
                 dialogue.Lines = dialogue.ShelterLines1;
