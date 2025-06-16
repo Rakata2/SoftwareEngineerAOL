@@ -35,6 +35,7 @@ public class DialogueScript : MonoBehaviour
     public string[] SandwichLines5 = { "That sandwich looks nice." };
 
     public string[] TestEnd = { "Thanks" };
+    public string[] ThankYouLines = { "Thank you so much.." };
 
     [HideInInspector]
     public string[] Lines;
@@ -44,6 +45,9 @@ public class DialogueScript : MonoBehaviour
     public GameObject ChoicePanel;
     public Button AllowButton, RejectButton;
     public bool ReadyForShelterchoice = false;
+    private bool IsThankYouDialogue = false;
+
+    [HideInInspector] public NPCMovement MovementNPC;
 
     // Start is called before the first frame update
     void Start()
@@ -58,6 +62,7 @@ public class DialogueScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (IsThankYouDialogue) return;
         if (Input.GetMouseButtonDown(0))
         {
             if (TextBoxComponent.text == Lines[index])
@@ -125,8 +130,8 @@ public class DialogueScript : MonoBehaviour
     {
         Debug.Log("Shelter Granted.");
         ChoicePanel.SetActive(false);
-        gameObject.SetActive(false);
         ReadyForShelterchoice = false;
+        HandleThankYouAndMove();
     }
 
     void HandleRejectShelter()
@@ -135,5 +140,58 @@ public class DialogueScript : MonoBehaviour
         ChoicePanel.SetActive(false);
         gameObject.SetActive(false);
         ReadyForShelterchoice = false;
+
+    }
+
+    public void HandleThankYouAndMove()
+    {
+        Lines = ThankYouLines;
+        index = 0;
+        IsThankYouDialogue = true;
+        gameObject.SetActive(true);
+        TypingCoroutine = StartCoroutine(TypeLine());
+        StartCoroutine(MoveNPCAfterDelay());
+    }
+
+    IEnumerator MoveNPCAfterDelay()
+    {
+        yield return new WaitUntil(() => TextBoxComponent.text == Lines[index]);
+        yield return new WaitForSeconds(1f);
+        if (MovementNPC != null)
+        {
+            MovementNPC.MoveToTheRight();
+        }
+        else
+        {
+            Debug.LogWarning("No npc reference movement set");
+        }
+        gameObject.SetActive(false);
+        IsThankYouDialogue = false;
+    }
+
+    public void HandleFoodChoice(string ChosenFood)
+    {
+        if (MovementNPC == null)
+        {
+            Debug.LogWarning("No NPC attached to this dialogue");
+            return;
+        }
+
+        FoodType selected;
+        if (!System.Enum.TryParse(ChosenFood, true, out selected))
+        {
+            Debug.LogWarning("Invalid food type nigger: " + ChosenFood);
+            return;
+        }
+
+        if (MovementNPC.RequestedFood == selected)
+        {
+            Debug.Log("Correct food given: " + ChosenFood);
+            HandleThankYouAndMove();
+        }
+        else
+        {
+            Debug.Log("Incorrect nigger" + MovementNPC.RequestedFood + "it was: " + ChosenFood);
+        }
     }
 }

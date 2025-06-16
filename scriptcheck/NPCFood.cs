@@ -4,53 +4,62 @@ using JetBrains.Annotations;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
-
+public enum FoodType
+{
+    None,
+    Soup,
+    Porridge,
+    Sandwich
+}
 public class NPCFood : MonoBehaviour
 {
     public DialogueScript dialogue;
     private bool TriggerDialogue = false;
+    public GameObject TrayTablePanel;
+    public FoodType RequestFood = FoodType.None;
+    public NPCMovement MovingNPC;
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    public void Sandwichthanks()
+    public void HandleFoodSelection(FoodType SelectedFood)
     {
-        if(!TriggerDialogue)
+        Debug.Log("Requested: " + MovingNPC.RequestedFood + "selected: " + SelectedFood);
+        if (SelectedFood == MovingNPC.RequestedFood)
         {
-            TriggerDialogue = true;
-            dialogue.Lines = dialogue.TestEnd;
-            dialogue.gameObject.SetActive(true);
-            dialogue.StartDialogue();
+            // dialogue.Lines = dialogue.TestEnd;
+            TrayTablePanel.SetActive(false);
+            // dialogue.gameObject.SetActive(true);
+            // dialogue.StartDialogue();
+            dialogue.HandleThankYouAndMove();
+            
+        }
+        else
+        {
+            Debug.Log("Wrong food selected");
         }
     }
 
-    public void Porridgethanks()
+    public void OnSoupClicked()
     {
-        if(!TriggerDialogue)
-        {
-            TriggerDialogue = true;
-            dialogue.Lines = dialogue.TestEnd;
-            dialogue.gameObject.SetActive(true);
-            dialogue.StartDialogue();
-        }
+        HandleFoodSelection(FoodType.Soup);
     }
 
-    public void Soupthanks()
+    public void OnPorrdigeClick()
     {
-        if(!TriggerDialogue)
-        {
-            TriggerDialogue = true;
-            dialogue.Lines = dialogue.TestEnd;
-            dialogue.gameObject.SetActive(true);
-            dialogue.StartDialogue();
-        }
+        HandleFoodSelection(FoodType.Porridge);
+    }
+
+    public void OnSandwichClicked()
+    {
+        HandleFoodSelection(FoodType.Sandwich);
     }
 }
