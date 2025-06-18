@@ -12,6 +12,7 @@ public class NPCMovement : MonoBehaviour
     public DialogueScript dialogue;
     private bool TriggerDialogue = false;
     public FoodType RequestedFood = FoodType.None;
+    public bool BADGUY = false;
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +27,7 @@ public class NPCMovement : MonoBehaviour
         if (!TriggerDialogue && Vector3.Distance(transform.position, targetPosition) < 0.1f)
         {
             TriggerDialogue = true;
-            int choice = Random.Range(0, 20);
+            int choice = Random.Range(0, 25);
             // int choice = 8;
             if (choice == 0) {dialogue.Lines = dialogue.ShelterLines1; RequestedFood = FoodType.None; }
             else if (choice == 1){dialogue.Lines = dialogue.ShelterLines2; RequestedFood = FoodType.None;}
@@ -34,23 +35,29 @@ public class NPCMovement : MonoBehaviour
             else if (choice == 3){dialogue.Lines = dialogue.ShelterLines4;RequestedFood = FoodType.None;}
             else if (choice == 4){dialogue.Lines = dialogue.ShelterLines5;RequestedFood = FoodType.None;}
 
-            else if (choice == 5){dialogue.Lines = dialogue.SoupLines1;RequestedFood = FoodType.Soup;}
-            else if (choice == 6){dialogue.Lines = dialogue.SoupLines2;RequestedFood = FoodType.Soup;}
-            else if (choice == 7){dialogue.Lines = dialogue.SoupLines3;RequestedFood = FoodType.Soup;}
-            else if (choice == 8){dialogue.Lines = dialogue.SoupLines4;RequestedFood = FoodType.Soup;}
-            else if (choice == 9){dialogue.Lines = dialogue.SoupLines5;RequestedFood = FoodType.Soup;}
+            else if (choice == 5){dialogue.Lines = dialogue.SoupLines1; dialogue.CurrentWrongFoodLines = dialogue.WrongSoup1; RequestedFood = FoodType.Soup;}
+            else if (choice == 6){dialogue.Lines = dialogue.SoupLines2; dialogue.CurrentWrongFoodLines = dialogue.WrongSoup2; RequestedFood = FoodType.Soup;}
+            else if (choice == 7){dialogue.Lines = dialogue.SoupLines3; dialogue.CurrentWrongFoodLines = dialogue.WrongSoup3; RequestedFood = FoodType.Soup;}
+            else if (choice == 8){dialogue.Lines = dialogue.SoupLines4; dialogue.CurrentWrongFoodLines = dialogue.WrongSoup4; RequestedFood = FoodType.Soup;}
+            else if (choice == 9){dialogue.Lines = dialogue.SoupLines5; dialogue.CurrentWrongFoodLines = dialogue.WrongSoup5; RequestedFood = FoodType.Soup;}
 
-            else if (choice == 10){dialogue.Lines = dialogue.PorridgeLines1;RequestedFood = FoodType.Porridge;}
-            else if (choice == 11){dialogue.Lines = dialogue.PorridgeLines2;RequestedFood = FoodType.Porridge;}
-            else if (choice == 12){dialogue.Lines = dialogue.PorridgeLines3;RequestedFood = FoodType.Porridge;}
-            else if (choice == 13){dialogue.Lines = dialogue.PorridgeLines4;RequestedFood = FoodType.Porridge;}
-            else if (choice == 14){dialogue.Lines = dialogue.PorridgeLines5;RequestedFood = FoodType.Porridge;}
+            else if (choice == 10){dialogue.Lines = dialogue.PorridgeLines1; dialogue.CurrentWrongFoodLines = dialogue.WrongPorridge1; RequestedFood = FoodType.Porridge;}
+            else if (choice == 11){dialogue.Lines = dialogue.PorridgeLines2; dialogue.CurrentWrongFoodLines = dialogue.WrongPorridge2; RequestedFood = FoodType.Porridge;}
+            else if (choice == 12){dialogue.Lines = dialogue.PorridgeLines3; dialogue.CurrentWrongFoodLines = dialogue.WrongPorridge3; RequestedFood = FoodType.Porridge;}
+            else if (choice == 13){dialogue.Lines = dialogue.PorridgeLines4; dialogue.CurrentWrongFoodLines = dialogue.WrongPorridge4; RequestedFood = FoodType.Porridge;}
+            else if (choice == 14){dialogue.Lines = dialogue.PorridgeLines5; dialogue.CurrentWrongFoodLines = dialogue.WrongPorridge5; RequestedFood = FoodType.Porridge;}
 
-            else if (choice == 15){dialogue.Lines = dialogue.SandwichLines1;RequestedFood = FoodType.Sandwich;}
-            else if (choice == 16){dialogue.Lines = dialogue.SandwichLines2;RequestedFood = FoodType.Sandwich;}
-            else if (choice == 17){dialogue.Lines = dialogue.SandwichLines3;RequestedFood = FoodType.Sandwich;}
-            else if (choice == 18){dialogue.Lines = dialogue.SandwichLines4;RequestedFood = FoodType.Sandwich;}
-            else if (choice == 19){dialogue.Lines = dialogue.SandwichLines5;RequestedFood = FoodType.Sandwich;}
+            else if (choice == 15){dialogue.Lines = dialogue.SandwichLines1; dialogue.CurrentWrongFoodLines = dialogue.WrongSandwich1; RequestedFood = FoodType.Sandwich;}
+            else if (choice == 16){dialogue.Lines = dialogue.SandwichLines2; dialogue.CurrentWrongFoodLines = dialogue.WrongSandwich2; RequestedFood = FoodType.Sandwich;}
+            else if (choice == 17){dialogue.Lines = dialogue.SandwichLines3; dialogue.CurrentWrongFoodLines = dialogue.WrongSandwich3; RequestedFood = FoodType.Sandwich;}
+            else if (choice == 18){dialogue.Lines = dialogue.SandwichLines4; dialogue.CurrentWrongFoodLines = dialogue.WrongSandwich4; RequestedFood = FoodType.Sandwich;}
+            else if (choice == 19){dialogue.Lines = dialogue.SandwichLines5; dialogue.CurrentWrongFoodLines = dialogue.WrongSandwich5; RequestedFood = FoodType.Sandwich;}
+
+            else if (choice == 20){dialogue.Lines = dialogue.BadGuy1; BADGUY = true;}
+            else if (choice == 21){dialogue.Lines = dialogue.BadGuy2; BADGUY = true;}
+            else if (choice == 22){dialogue.Lines = dialogue.BadGuy3; BADGUY = true;}
+            else if (choice == 23){dialogue.Lines = dialogue.BadGuy4; BADGUY = true;}
+            else if (choice == 24){dialogue.Lines = dialogue.BadGuy5; BADGUY = true;}
             dialogue.MovementNPC = this;
             dialogue.gameObject.SetActive(true);
             dialogue.StartDialogue();
@@ -60,5 +67,13 @@ public class NPCMovement : MonoBehaviour
     {
         targetPosition = new Vector3(8f, transform.position.y, transform.position.z);
         TriggerDialogue = true;
+    }
+    public void GotChased()
+    {
+        Invoke("GotActuallyChased", 1f);
+    }
+    public void GotActuallyChased()
+    {
+        targetPosition = new Vector3(8f, transform.position.y, transform.position.z);
     }
 }
