@@ -18,6 +18,7 @@ public class NPCFood : MonoBehaviour
     public GameObject TrayTablePanel;
     public FoodType RequestFood = FoodType.None;
     public NPCMovement MovingNPC;
+    public string[] CurrentWrongFoodSelection;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,19 +33,26 @@ public class NPCFood : MonoBehaviour
 
     public void HandleFoodSelection(FoodType SelectedFood)
     {
-        Debug.Log("Requested: " + MovingNPC.RequestedFood + "selected: " + SelectedFood);
-        if (SelectedFood == MovingNPC.RequestedFood)
+        Debug.Log("Requested: " + MovingNPC.RequestedFood + " " + "selected: " + SelectedFood);
+        // if (SelectedFood == MovingNPC.RequestedFood)
+        // {
+        //     // dialogue.Lines = dialogue.TestEnd;
+        //     TrayTablePanel.SetActive(false);
+        //     dialogue.HandleThankYouAndMove();
+
+        // }
+        // else
+        // {
+
+        //     Debug.Log("Wrong food selected");
+        // }
+        if (dialogue != null)
         {
-            // dialogue.Lines = dialogue.TestEnd;
-            TrayTablePanel.SetActive(false);
-            // dialogue.gameObject.SetActive(true);
-            // dialogue.StartDialogue();
-            dialogue.HandleThankYouAndMove();
-            
+            dialogue.HandleFoodChoice(SelectedFood.ToString());
         }
         else
         {
-            Debug.Log("Wrong food selected");
+            Debug.LogWarning("Dialogue reference is missing in NPCFood");
         }
     }
 
